@@ -5,19 +5,16 @@ import {
   MessageSquare,
   HardDrive
 } from "lucide-react";
-import { useState } from "react";
 
-const baseCardStyle: React.CSSProperties = {
+const cardStyle: React.CSSProperties = {
   backgroundColor: "#111118",
   border: "1px solid #2a0f14",
   borderRadius: "12px",
-  padding: "16px",
-  transition: "transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease"
+  padding: "16px"
 };
 
 export default function Dashboard() {
   const storageUsed = 68;
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const stats = [
     { label: "Total Posts", value: "128", icon: FileText },
@@ -38,7 +35,7 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* Stats */}
+      {/* Stats with Icons */}
       <div
         style={{
           display: "grid",
@@ -49,24 +46,9 @@ export default function Dashboard() {
       >
         {stats.map((item) => {
           const Icon = item.icon;
-          const isHovered = hoveredCard === item.label;
 
           return (
-            <div
-              key={item.label}
-              style={{
-                ...baseCardStyle,
-                transform: isHovered ? "translateY(-4px)" : "none",
-                boxShadow: isHovered
-                  ? "0 8px 24px rgba(248,113,113,0.15)"
-                  : "none",
-                border: isHovered
-                  ? "1px solid #f87171"
-                  : "1px solid #2a0f14"
-              }}
-              onMouseEnter={() => setHoveredCard(item.label)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
+            <div key={item.label} style={cardStyle}>
               <div
                 style={{
                   display: "flex",
@@ -86,14 +68,7 @@ export default function Dashboard() {
                   {item.label}
                 </span>
 
-                <Icon
-                  size={18}
-                  color="#f87171"
-                  style={{
-                    transition: "transform 0.25s ease",
-                    transform: isHovered ? "scale(1.15)" : "scale(1)"
-                  }}
-                />
+                <Icon size={18} color="#f87171" />
               </div>
 
               <div
@@ -111,12 +86,7 @@ export default function Dashboard() {
       </div>
 
       {/* Recent Activity */}
-      <div
-        style={{
-          ...baseCardStyle,
-          marginBottom: "32px"
-        }}
-      >
+      <div style={{ ...cardStyle, marginBottom: "32px" }}>
         <h3 style={{ color: "#e5e7eb", marginBottom: "12px" }}>
           Recent Activity
         </h3>
@@ -136,22 +106,15 @@ export default function Dashboard() {
                   ? "1px solid #2a0f14"
                   : "none",
               color: "#9ca3af",
-              fontSize: "14px",
-              transition: "color 0.2s ease"
+              fontSize: "14px"
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "#f87171")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "#9ca3af")
-            }
           >
             {activity}
           </div>
         ))}
       </div>
 
-      {/* System + Storage */}
+      {/* System Status + Storage */}
       <div
         style={{
           display: "grid",
@@ -159,7 +122,7 @@ export default function Dashboard() {
           gap: "16px"
         }}
       >
-        <div style={baseCardStyle}>
+        <div style={cardStyle}>
           <h4 style={{ color: "#e5e7eb", marginBottom: "8px" }}>
             System Status
           </h4>
@@ -168,7 +131,8 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div style={baseCardStyle}>
+        {/* Storage Usage with Progress */}
+        <div style={cardStyle}>
           <div
             style={{
               display: "flex",
@@ -187,6 +151,7 @@ export default function Dashboard() {
             {storageUsed}% of allocated storage used
           </p>
 
+          {/* Progress Bar */}
           <div
             style={{
               height: "8px",
@@ -201,7 +166,7 @@ export default function Dashboard() {
                 height: "100%",
                 width: `${storageUsed}%`,
                 backgroundColor: "#f87171",
-                transition: "width 0.5s ease"
+                transition: "width 0.3s ease"
               }}
             />
           </div>
